@@ -37,6 +37,8 @@ function SignUp() {
                 Password: getPassword.current.value
             })
             if (Response.status === 200) {
+                const tokenID=Response.data.tokenID
+                localStorage.setItem("tokenID",tokenID)
                 alert(Response.data.message)
             }
         } catch (err) {

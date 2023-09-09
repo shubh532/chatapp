@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { SideHeader, SideFooter } from "./SideBar";
-import Profile from "../../Assets/profile.jpg"
+import { SearchBar } from "./SearchBar";
+import Avatar from "../../UI Components/Avatar";
 import { getUsers } from "../../Redux/UserData";
 
 function Home() {
@@ -24,10 +24,8 @@ function Home() {
     }, [])
 
     const showUser = users.map(user => {
-        return (<li className="relative border-b-2 border-gray-500 rounded-lg p-2 flex items-center">
-            <div className="h-12 w-12 rounded-full  overflow-hidden bg-gray-300">
-                <img src={Profile} alt="DP"></img>
-            </div>
+        return (<li key={user.id} className="relative border-b-2 border-gray-500 rounded-lg p-2 flex items-center">
+            <Avatar height="3" width="3" />
             <div className="ml-3">
                 <span className="text-lg font-medium text-white">{user.Name}</span>
             </div>
@@ -37,13 +35,12 @@ function Home() {
 
     return (
         <div className="relative max-w-[28rem] bg-gray-900 h-full">
-            <SideHeader />
+            <SearchBar />
             <div className="h-[82%] overflow-y-auto">
                 <ul>
                     {showUser}
                 </ul>
             </div>
-            <SideFooter />
         </div >
     )
 }

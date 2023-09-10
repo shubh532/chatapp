@@ -1,13 +1,17 @@
 import axios from "axios"
 import { useState } from "react"
+import { useParams } from "react-router-dom/cjs/react-router-dom.min"
 import Picker from '@emoji-mart/react'
 import { HiPaperAirplane } from "react-icons/hi2"
 import { LiaGrinAlt, } from "react-icons/lia";
+import { useSelector } from "react-redux"
 
 
 export function MessageInput() {
     const [message, typeMessage] = useState("")
     const [showEmojiChart, unShowEmojiChart] = useState(false)
+    const Id = useParams()
+    const userID = useSelector(state => state.UserData.userId)
 
     const onClickEmojiHandler = (e) => {
         let sym = e.unified.split("-");
@@ -26,9 +30,9 @@ export function MessageInput() {
     }
 
     const sendMessageHandler = async () => {
-        console.log(message)
+        const date = new Date().toLocaleString()
         try {
-            const Response = await axios.post("http://localhost:4000/chat_app/messages", { message: message })
+            const Response = await axios.post(`http://localhost:4000/messages/sent_to/${Id.userId}`, { message, date, userID })
             console.log(Response)
         } catch (err) {
             console.log(err)

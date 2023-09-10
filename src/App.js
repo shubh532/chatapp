@@ -1,5 +1,4 @@
 import SignUp from './Components/Authentications/SignUp';
-import Home from './Components/Chat/Home';
 import { useSelector } from 'react-redux';
 import ChatApp from './Components/Chat/FullPage';
 

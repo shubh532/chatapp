@@ -22,11 +22,11 @@ function ChatApp() {
         }
     }
     useEffect(() => {
-        console.log("useEffect Runing in Home")
+        console.log("useEffect Runing in getUsersHandler FullPage")
         getUsersHandler()
     }, [])
 
-    
+
     return (
         <div className="h-full bg-gray-900 grid grid-cols-7">
             <div className="col-span-2 "><Home /></div>

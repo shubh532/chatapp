@@ -11,7 +11,7 @@ function ChatCard(props) {
                 <div className="relative min-w-[6rem]">
                     {message}
                     <div className=" flex items-center  ">
-                        <span className="text-sm  text-gray-300 ">4:50pm</span>
+                        <span className="text-sm  text-gray-300 ">{time}</span>
                         <span className="text-gray-30 "><HiOutlineArrowUpRight /></span>
                     </div>
                 </div>

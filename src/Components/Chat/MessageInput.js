@@ -4,7 +4,8 @@ import { useParams } from "react-router-dom/cjs/react-router-dom.min"
 import Picker from '@emoji-mart/react'
 import { HiPaperAirplane } from "react-icons/hi2"
 import { LiaGrinAlt, } from "react-icons/lia";
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
+import { addNewMessage } from "../../Redux/Messages"
 
 
 export function MessageInput() {
@@ -12,6 +13,7 @@ export function MessageInput() {
     const [showEmojiChart, unShowEmojiChart] = useState(false)
     const Id = useParams()
     const userID = useSelector(state => state.UserData.userId)
+    const Dispatch = useDispatch()
 
     const onClickEmojiHandler = (e) => {
         let sym = e.unified.split("-");
@@ -33,7 +35,10 @@ export function MessageInput() {
         const date = new Date().toLocaleString()
         try {
             const Response = await axios.post(`http://localhost:4000/messages/sent_to/${Id.userId}`, { message, date, userID })
-            console.log(Response)
+            const msg = Response.data.message
+            Dispatch(addNewMessage(msg))
+            console.log(msg,"msg")
+            typeMessage("")
         } catch (err) {
             console.log(err)
         }

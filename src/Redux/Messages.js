@@ -8,12 +8,14 @@ const messagesSlice = createSlice({
     reducers: {
         getMessagesHandler(state, action) {
             const AllMessages = action.payload
-            console.log(AllMessages, "from store")
             state.messages = AllMessages
+        },
+        addNewMessage(state, action) {
+            state.messages.push(action.payload)
         }
     }
 })
 
 
-export const { getMessagesHandler } = messagesSlice.actions
+export const { getMessagesHandler, addNewMessage } = messagesSlice.actions
 export default messagesSlice.reducer

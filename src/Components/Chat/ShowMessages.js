@@ -16,7 +16,7 @@ function ShowMessage() {
     const id = useParams()
     const user2Id = id.userId
     const userData = users.filter(user => user.id === id.userId)
-    console.log(messages, ",e")
+console.log(messages, ",e")
 
     const getUserMessages = async () => {
         SetLoading(true)

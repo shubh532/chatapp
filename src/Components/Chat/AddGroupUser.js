@@ -11,6 +11,9 @@ function AddGroupUser() {
     const Users = useSelector(state => state.UserData.users)
     const [message, typeMessage] = useState("")
     const [showEmojiChart, unShowEmojiChart] = useState(false)
+    const [select_Users, setSelect_User] = useState([...Users])
+    const [selectedUsers, setSelectedUser] = useState([])
+
 
     const onClickEmojiHandler = (e) => {
         let sym = e.unified.split("-");
@@ -25,13 +28,30 @@ function AddGroupUser() {
         unShowEmojiChart(!showEmojiChart)
     }
 
-    const getGroupNameHandler=(e)=>{
+    const getGroupNameHandler = (e) => {
         e.preventDefault()
         typeMessage(e.target.value)
     }
 
-    const createGroupHandler=()=>{
-        
+    const SelectGroupUsersHandler = (id, name) => {
+        const grpUser = {
+            userId: id,
+            Name: name
+        }
+        setSelectedUser([...selectedUsers, grpUser])
+        const removeUser = select_Users.filter(user => user.id !== id)
+        setSelect_User([...removeUser])
+    }
+
+    const RemoveSelectedUser = (id, Name) => {
+        const removeUser = selectedUsers.filter(user => user.userId !== id)
+        setSelect_User([...select_Users, { id, Name }])
+        setSelectedUser([...removeUser])
+
+    }
+
+    const createGroupHandler = () => {
+
     }
 
     return (
@@ -52,18 +72,31 @@ function AddGroupUser() {
             {showEmojiChart && <div className="absolute top-14 right-0">
                 <Picker skin={5} onEmojiSelect={onClickEmojiHandler} previewPosition={"none"} />
             </div>}
+            <div>
+                <ul className="overflow-y-auto max-h-52">
+                    {selectedUsers.map((user) =>
+                        <li key={user.userId} onClick={() => RemoveSelectedUser(user.userId, user.Name)} className="p-2 cursor-pointer hover:bg-slate-400 flex items-center">
+                            <Avatar height="3" width="3" />
+                            <span className="ml-2 text-xl font-semibold">{user.Name}</span>
+                        </li>
+                    )}
+                </ul>
+            </div>
             <div className="w-96 flex items-center p-1 mt-1 rounded-md">
                 <span className="bg-slate-300 rounded-full p-1">
                     <HiMiniUserPlus />
                 </span>
                 <span className="ml-2 font-semibold">Add Users</span>
             </div>
-            <ul className="overflow-x-auto h-[32rem]" >
-                {Users.map((user) =>
-                    <li key={user.id} className="p-2  flex items-center">
-                        <Avatar height="3" width="3" />
-                        <span className="ml-2 text-xl font-semibold">{user.Name}</span>
-                    </li>
+            <ul className="overflow-y-auto max-h-full" >
+                {select_Users.map((user) => {
+                    return (
+                        <li key={user.id} onClick={() => SelectGroupUsersHandler(user.id, user.Name)} className="p-2 cursor-pointer hover:bg-slate-400 flex items-center">
+                            <Avatar height="3" width="3" />
+                            <span className="ml-2 text-xl font-semibold">{user.Name}</span>
+                        </li>
+                    )
+                }
                 )}
             </ul>
         </Card>

@@ -10,13 +10,13 @@ import { getMessagesHandler } from "../../Redux/Messages";
 function ShowMessage() {
     const [Loading, SetLoading] = useState(false)
     const Dispatch = useDispatch()
-    const users = useSelector(state => state.UserData.users)
+    const ChatList = useSelector(state => state.Messages.ChatList)
     const userId = useSelector(state => state.UserData.userId)
     const messages = useSelector(state => state.Messages.messages)
     const id = useParams()
     const user2Id = id.userId
-    const userData = users.filter(user => user.id === id.userId)
-console.log(messages, ",e")
+    const userData = ChatList.filter(user => user.id === id.userId)
+
 
     const getUserMessages = async () => {
         SetLoading(true)

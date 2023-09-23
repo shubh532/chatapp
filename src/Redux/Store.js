@@ -3,12 +3,14 @@ import AuthReducers from "./Authentication"
 import userReducer from "./UserData"
 import MessagesReducer from "./Messages";
 import ModalReducer from "./Modal";
+import GroupsReducer from "./Groups";
 
 export const store = configureStore({
     reducer: {
         Authentication: AuthReducers,
         UserData: userReducer,
         Messages: MessagesReducer,
-        Modal: ModalReducer
+        Modal: ModalReducer,
+        Group: GroupsReducer
     }
 })

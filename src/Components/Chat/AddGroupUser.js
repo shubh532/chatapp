@@ -1,18 +1,24 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { modalHandler } from "../../Redux/Modal";
 import Card from "../../UI Components/Card";
 import { HiMiniUserPlus, HiMiniCheck } from "react-icons/hi2"
 import { LiaGrinAlt, } from "react-icons/lia";
 import Avatar from "../../UI Components/Avatar";
 import { useSelector } from "react-redux/es/hooks/useSelector";
 import Picker from '@emoji-mart/react'
+import axios from "axios";
+import { getGroups } from "../../Redux/Groups";
 
 
 function AddGroupUser() {
     const Users = useSelector(state => state.UserData.users)
-    const [message, typeMessage] = useState("")
+    const userId = useSelector(state => state.UserData.userId)
+    const [GroupName, typeGroupName] = useState("")
     const [showEmojiChart, unShowEmojiChart] = useState(false)
     const [select_Users, setSelect_User] = useState([...Users])
     const [selectedUsers, setSelectedUser] = useState([])
+    const Dispatch = useDispatch()
 
 
     const onClickEmojiHandler = (e) => {
@@ -20,7 +26,7 @@ function AddGroupUser() {
         let codesArray = [];
         sym.forEach((el) => codesArray.push("0x" + el));
         let emoji = String.fromCodePoint(...codesArray);
-        typeMessage(message + emoji);
+        typeGroupName(GroupName + emoji);
     }
 
     const EmojiHandler = (e) => {
@@ -30,7 +36,7 @@ function AddGroupUser() {
 
     const getGroupNameHandler = (e) => {
         e.preventDefault()
-        typeMessage(e.target.value)
+        typeGroupName(e.target.value)
     }
 
     const SelectGroupUsersHandler = (id, name) => {
@@ -50,8 +56,23 @@ function AddGroupUser() {
 
     }
 
-    const createGroupHandler = () => {
-
+    const createGroupHandler = async (e) => {
+        e.preventDefault()
+        if (GroupName === "") {
+            alert("Please Enter Group Name")
+            return
+        } else if (selectedUsers.length < 1) {
+            alert("select users")
+        }
+        try {
+            const Response = await axios.post(`http://localhost:4000/group/${userId}`, { name: GroupName, users: selectedUsers })
+            const GroupDatails = Response.data.groupName
+            console.log(GroupDatails, "GroupDatails")
+            Dispatch(getGroups({ id: GroupDatails.id, Name: GroupDatails.Name }))
+        } catch (err) {
+            console.log(err, "from createGroupHandler")
+        }
+        Dispatch(modalHandler())
     }
 
     return (
@@ -59,12 +80,12 @@ function AddGroupUser() {
             <div className="shadow-xl p-2 ">
                 <form className="flex items-center justify-between" >
                     <div className="flex items-center">
-                        <input className="w-72 border-none focus:ring-0" maxLength={30} placeholder="Group Name" type="text" required value={message} onChange={getGroupNameHandler} ></input>
+                        <input className="w-72 border-none focus:ring-0" maxLength={30} placeholder="Group Name" type="text" required value={GroupName} onChange={getGroupNameHandler} ></input>
                         <button onClick={EmojiHandler}>
                             <LiaGrinAlt className="text-2xl" />
                         </button>
                     </div>
-                    <button className="bg-slate-300 p-2 rounded-full mr-2">
+                    <button onClick={(e) => createGroupHandler(e)} className="bg-slate-300 p-2 rounded-full mr-2">
                         <HiMiniCheck className="text-2xl" />
                     </button>
                 </form>

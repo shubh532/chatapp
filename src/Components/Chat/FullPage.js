@@ -4,6 +4,8 @@ import { Route, Switch } from "react-router-dom"
 import { useSelector, useDispatch } from 'react-redux';
 import axios from "axios";
 import { getUsers } from "../../Redux/UserData";
+import { getGroups } from "../../Redux/Groups";
+import { getAllChatList } from "../../Redux/Messages";
 const ShowMessage = lazy(() => import("./ShowMessages"));
 
 
@@ -15,8 +17,12 @@ function ChatApp() {
     const getUsersHandler = async () => {
         try {
             const Response = await axios.get(`http://localhost:4000/authenction/getusers/${userId}`)
-            const users = Response.data.users
-            Dispatch(getUsers(users))
+            const users = Response.data.allUsers
+            const groups = Response.data.userDetails.groups
+            const allGroups = groups.map(grp => ({ id: grp.id, Name: grp.Name }))
+            Dispatch(getUsers([...users]))
+            Dispatch(getGroups([...allGroups]))
+            Dispatch(getAllChatList([...users, ...allGroups]))
         } catch (err) {
             console.log(err)
         }

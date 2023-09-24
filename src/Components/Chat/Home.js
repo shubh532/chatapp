@@ -21,7 +21,7 @@ function Home() {
     })
 
     return (
-        <div className="relative max-w-[28rem] bg-gray-900 h-full">
+        <div className="relative max-w-[28rem] bg-gray-900 h-screen">
             <SearchBar />
             <div className="h-[90%] overflow-y-auto">
                 <ul>

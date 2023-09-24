@@ -6,6 +6,7 @@ import axios from "axios";
 import { getUsers } from "../../Redux/UserData";
 import { getGroups } from "../../Redux/Groups";
 import { getAllChatList } from "../../Redux/Messages";
+import Profile from "./Profile";
 const ShowMessage = lazy(() => import("./ShowMessages"));
 
 
@@ -13,6 +14,13 @@ function ChatApp() {
 
     const Dispatch = useDispatch()
     const userId = useSelector(state => state.UserData.userId)
+    const ShowUserInfo = useSelector(state => state.UserData.ShowUserInfo)
+    let col
+    if (ShowUserInfo) {
+        col = "col-span-3"
+    } else {
+        col = "col-span-5"
+    }
 
     const getUsersHandler = async () => {
         try {
@@ -36,7 +44,7 @@ function ChatApp() {
     return (
         <div className="h-full bg-gray-900 grid grid-cols-7">
             <div className="col-span-2 "><Home /></div>
-            <div className="col-span-5 border-l-2 border-gray-600">
+            <div className={`${col} border-l-2 border-gray-600`}>
                 <Switch>
                     <Route path="/" exact>
                         <h1 className="text-white">Welcom to Chat App</h1>
@@ -48,6 +56,11 @@ function ChatApp() {
                     </Route>
                 </Switch>
             </div>
+            {ShowUserInfo &&
+                <div className="col-span-2 border-l-2 overflow-auto  border-gray-600">
+                    <Profile />
+                </div>
+            }
         </div>
     )
 }

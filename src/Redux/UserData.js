@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 const userId = localStorage.getItem("userId")
 
-const initialState = { users: [], userId: userId, ShowUserInfo: false, Info: [] }
+const initialState = { users: [], userId: userId, ShowUserInfo: false, Info: [], ShowUsers: true }
 
 const UserSlice = createSlice({
     name: "user",
@@ -15,10 +15,17 @@ const UserSlice = createSlice({
         },
         getInfo(state, action) {
             state.Info = action.payload
+        },
+        ShowUsers(state, action) {
+            state.ShowUsers = action.payload
+        },
+        ShowGroup(state, action) {
+            state.ShowUsers = action.payload
         }
+
     }
 })
 
-export const { getUsers, ShowUserInfoHandler, getInfo } = UserSlice.actions
+export const { getUsers, ShowUserInfoHandler, getInfo, ShowUsers, ShowGroup } = UserSlice.actions
 
 export default UserSlice.reducer

@@ -3,16 +3,31 @@ import { Link } from "react-router-dom/cjs/react-router-dom.min";
 import { HiXMark } from "react-icons/hi2";
 import { ShowUserInfoHandler } from "../../Redux/UserData";
 import Avatar from "../../UI Components/Avatar";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 function Profile() {
+    const [groupUsers, setGroupUsers] = useState([])
     const Dispatch = useDispatch()
     const Info = useSelector(state => state.UserData.Info)
-
-    console.log(Info, "Info")
 
     const closeUserInfo = () => {
         Dispatch(ShowUserInfoHandler())
     }
+
+    const getGroupsMember = async () => {
+        try {
+            const Response = await axios.get(`http://localhost:4000/group/${Info.groupId}`)
+            const groupUsers = Response.data.users
+            setGroupUsers([...groupUsers])
+            console.log(groupUsers)
+        } catch (err) {
+            console.log(err, "err from Profile")
+        }
+    }
+    useEffect(() => {
+        getGroupsMember()
+    }, [Info])
 
     return (
         <div className="text-white relative w-full h-full ">
@@ -37,42 +52,19 @@ function Profile() {
                     Common groups
                 </span>
                 <ul>
-                    <li key={4} className="relative border-gray-500 rounded-lg p-2 ">
+                    {groupUsers.map(user =>
+                    (<li key={user.id} className="relative border-gray-500 rounded-lg p-2 ">
                         <Link className="flex items-center" to={`/xyz`}>
                             <Avatar height="3" width="3" />
                             <div className="ml-3">
-                                <span className="text-lg font-medium text-white">Testing</span>
+                                <span className="text-lg font-medium text-white">{user.name}</span>
                             </div>
                             <span className="absolute right-0 top-1 mr-2 text-sm text-gray-500 font-medium">4:05pm</span>
                         </Link>
-                    </li>
-                    <li key={4} className="relative border-gray-500 rounded-lg p-2 ">
-                        <Link className="flex items-center" to={`/xyz`}>
-                            <Avatar height="3" width="3" />
-                            <div className="ml-3">
-                                <span className="text-lg font-medium text-white">Testing</span>
-                            </div>
-                            <span className="absolute right-0 top-1 mr-2 text-sm text-gray-500 font-medium">4:05pm</span>
-                        </Link>
-                    </li>
-                    <li key={4} className="relative border-gray-500 rounded-lg p-2 ">
-                        <Link className="flex items-center" to={`/xyz`}>
-                            <Avatar height="3" width="3" />
-                            <div className="ml-3">
-                                <span className="text-lg font-medium text-white">Testing</span>
-                            </div>
-                            <span className="absolute right-0 top-1 mr-2 text-sm text-gray-500 font-medium">4:05pm</span>
-                        </Link>
-                    </li>
-                    <li key={4} className="relative border-gray-500 rounded-lg p-2 ">
-                        <Link className="flex items-center" to={`/xyz`}>
-                            <Avatar height="3" width="3" />
-                            <div className="ml-3">
-                                <span className="text-lg font-medium text-white">Testing</span>
-                            </div>
-                            <span className="absolute right-0 top-1 mr-2 text-sm text-gray-500 font-medium">4:05pm</span>
-                        </Link>
-                    </li>
+                    </li>)
+                    )
+                    }
+
                 </ul>
             </div>
         </div>

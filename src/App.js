@@ -11,7 +11,7 @@ function App() {
   console.log(isAuthorizes, "authorization")
 
   return (
-    <div className='h-[44.7rem]'>
+    <div className='h-[44rem]'>
       {isAuthorizes ?
         <ChatApp /> :
         <SignUp />}

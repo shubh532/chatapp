@@ -39,7 +39,6 @@ function ShowMessage() {
     )
 
 
-    Dispatch(getInfo({ ...Info, groupId: params.userId }))
 
     const ShowUserInfo = () => {
         Dispatch(ShowUserInfoHandler())
@@ -59,6 +58,7 @@ function ShowMessage() {
     }
     useEffect(() => {
         getUserMessages()
+        Dispatch(getInfo({ ...Info, groupId: params.userId }))
     }, [user2Id])
 
     return (

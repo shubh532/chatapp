@@ -23,7 +23,14 @@ function ChatApp() {
             const Response = await axios.get(`http://localhost:4000/authenction/getusers/${userId}`)
             const users = Response.data.allUsers
             const groups = Response.data.userDetails.groups
-            const allGroups = groups.map(grp => ({ id: grp.id, Name: grp.Name }))
+            console.log(groups, "allGroups")
+            const allGroups = groups.map(grp => (
+                {
+                    id: grp.id,
+                    Name: grp.Name,
+                    isAdmin: grp.group_members.admin
+                }
+            ))
             Dispatch(getUsers([...users]))
             Dispatch(getGroups([...allGroups]))
             SetLoading(false)

@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import { ShowUserInfoHandler, getInfo } from "../../Redux/UserData";
 import { getMessagesHandler } from "../../Redux/Messages";
+import Span from "../../UI Components/Span";
 
 function ShowMessage() {
     const [Loading, SetLoading] = useState(false)
@@ -68,8 +69,8 @@ function ShowMessage() {
                 <button className="flex items-center" onClick={() => ShowUserInfo()}>
                     <Avatar height="3" width="3" />
                     <div className="ml-4 flex flex-col items-start">
-                        <span className="font-medium text-lg">{Info[0].Name}</span>
-                        <span className="text-xs">last seen today at 5:45 pm</span>
+                        <Span contain={Info[0].Name} font={"medium"} size={"lg"} />
+                        <Span contain={"last seen today at 5:45 pm"} size={"xs"} />
                     </div>
                 </button>
             </div>

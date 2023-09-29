@@ -1,6 +1,7 @@
 import React from "react";
 import Avatar from "./Avatar";
 import { HiOutlineArrowUpRight } from "react-icons/hi2"
+import Span from "./Span";
 
 function ChatCard(props) {
     const { color, message, time } = props
@@ -11,8 +12,8 @@ function ChatCard(props) {
                 <div className="relative min-w-[6rem]">
                     {message}
                     <div className=" flex items-center  ">
-                        <span className="text-sm  text-gray-300 ">{time}</span>
-                        <span className="text-gray-30 "><HiOutlineArrowUpRight /></span>
+                        <Span contain={time} size={"sm"} color={"gray"} shade={300} />
+                        <Span contain={<HiOutlineArrowUpRight />} />
                     </div>
                 </div>
 

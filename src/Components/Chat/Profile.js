@@ -1,12 +1,13 @@
 import { useDispatch, useSelector } from "react-redux";
-import { HiXMark } from "react-icons/hi2";
 import { ShowUserInfoHandler } from "../../Redux/UserData";
 import Avatar from "../../UI Components/Avatar";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import List from "../../UI Components/List";
-import { HiMiniEllipsisVertical } from "react-icons/hi2";
+import { HiMiniEllipsisVertical, HiMiniUserPlus, HiXMark } from "react-icons/hi2";
 import { getGroupId } from "../../Redux/Groups";
+import Button from "../../UI Components/Button";
+import Span from "../../UI Components/Span";
 
 function Profile() {
     const [groupUsers, setGroupUsers] = useState([])
@@ -43,38 +44,43 @@ function Profile() {
     return (
         <div className="text-white relative w-full h-full ">
             <div className="h-[10%] sticky z-[2] top-0 flex items-center p-3 bg-gray-700">
-                <button onClick={() => closeUserInfo()}>
-                    <HiXMark className="text-2xl" />
-                </button>
-                <span className="ml-4 text-lg">Contact Info</span>
+                <Button
+                    onClickFunc={() => closeUserInfo()}
+                    icon={<HiXMark className="text-2xl" />}
+                />
+                <Span contain={"Contact Info"} size={"lg"} />
             </div>
             <div className="flex p-6 bg-gray-800 flex-col items-center">
                 <Avatar height="11" width="11" />
-                <span className="text-lg">{Info[0].Name}</span>
-                <span className="text-gray-500">{Info[0].mobile}</span>
-                <span className="text-gray-500">{Info[0].email}</span>
+                <Span contain={Info[0].Name} />
+                <Span contain={Info[0].mobile} />
+                <Span contain={Info[0].email} />
             </div>
-            <div className="p-5 mt-4 bg-gray-800">
-                <h3 className="text-lg text-gray-500">About</h3>
-                <span>We can't force people to choose us.</span>
+            <div className="p-5 mt-4 flex flex-col bg-gray-800">
+                <Span contain={"About"} />
+                <Span contain={"We can't force people to choose us"} />
             </div>
             {!isUser && <div className="p-5 mt-4 bg-gray-800">
-                <span className="text-lg text-gray-500">
-                    Group Members
-                </span>
+                <div className="flex items-center justify-between">
+                    <Span contain={"Group Members"} />
+
+                    <Button
+                        onClickFunc={() => closeUserInfo()}
+                        icon={<HiMiniUserPlus className="pr-1 text-2xl" />}
+                        name={"Add Peoples"}
+                    />
+                </div>
                 <List
                     users={groupUsers}
                     btn={true}
                     btnName={<HiMiniEllipsisVertical className="text-xl" />}
-                    UpdateGroupUser={(user)=>UpdateGroupUser(user)}
+                    UpdateGroupUser={(user) => UpdateGroupUser(user)}
                     isAdmin={Info[0].isAdmin}
                 />
 
             </div>}
             {!isUser && <div className="p-5 mt-4 bg-gray-800">
-                <span className="text-lg text-gray-500">
-                    Invite Contact
-                </span>
+                <Span contain={"Invite Contact"} />
                 <List
                     users={InviteUser}
                     btn={true}

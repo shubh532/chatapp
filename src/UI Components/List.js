@@ -1,6 +1,8 @@
 import { useState } from "react";
 import Avatar from "./Avatar"
 import PopUpCard from "./PopUpCard";
+import Button from "./Button";
+import Span from "./Span";
 function List({ users, btn, btnName, BtnFuncs, UpdateGroupUser, isAdmin }) {
     const [popUpCard, SetPopUpCard] = useState(null)
 
@@ -23,19 +25,35 @@ function List({ users, btn, btnName, BtnFuncs, UpdateGroupUser, isAdmin }) {
                         <div className="flex items-center w-[72%]">
                             <Avatar height="2.5" width="2.5" />
                             <div className="ml-3">
-                                <span className="text-lg font-medium text-white">{user.Name}</span>
+                                <Span
+                                    contain={user.Name}
+                                    size={"lg"}
+                                    font={"medium"}
+                                />
                             </div>
                         </div>
-                        {user.admin && <span className="text-xs p-1 border-2 border-gray-500 rounded-md bg-slate-900">Admin</span>}
+                        {
+                            user.admin &&
+                            <Span
+                                contain={"Admin"}
+                                color={"gray"}
+                                shade={300}
+                                size={"xs"}
+                                style={"p-1 border-2 border-gray-500 rounded-md bg-slate-900"}
+                            />
+                        }
                         <div>
-                            {btn && <button onClick={() => BtnHandler(user.id)} className="hover:text-gray-400" >{btnName}</button>}
+                            {btn && <Button
+                                onClickFunc={() => BtnHandler(user.id)}
+                                icon={btnName}
+                            />}
                             {popUpCard === user.id &&
                                 <PopUpCard
                                     userId={user.id}
                                     isAdmin={isAdmin}
                                     UpdateGroupUser={UpdateGroupUser}
                                     users={users}
-                                    popUpCardHandler={()=>closePopUpCard()}
+                                    popUpCardHandler={() => closePopUpCard()}
                                 />
                             }
                         </div>

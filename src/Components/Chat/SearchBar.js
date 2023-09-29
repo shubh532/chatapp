@@ -47,12 +47,15 @@ export function SearchBar() {
                     icon={<HiMiniUser className="text-3xl text-gray-400 ml-1 mr-2  " />}
                     name={"Contacts"}
                     onClickFunc={UsersBtn}
+                    w={"full"}
                 />
 
                 <Button
                     icon={<HiMiniUsers className="text-3xl text-gray-400 ml-1 mr-2  " />}
                     name={"Groups"}
                     onClickFunc={GroupBtn}
+                    w={"full"}
+
                 />
 
             </div>

@@ -6,6 +6,7 @@ import { HiPaperAirplane } from "react-icons/hi2"
 import { LiaGrinAlt, } from "react-icons/lia";
 import { useSelector, useDispatch } from "react-redux"
 import { addNewMessage } from "../../Redux/Messages"
+import Button from "../../UI Components/Button"
 
 
 export function MessageInput() {
@@ -37,7 +38,7 @@ export function MessageInput() {
             const Response = await axios.post(`http://localhost:4000/messages/sent_to/${Id.userId}`, { message, date, userID })
             const msg = Response.data.message
             Dispatch(addNewMessage(msg))
-            console.log(msg,"msg")
+            console.log(msg, "msg")
             typeMessage("")
         } catch (err) {
             console.log(err)
@@ -51,13 +52,18 @@ export function MessageInput() {
                 </div>
             }
             <div className=" flex w-full p-2 bg-gray-900 items-center absolute bottom-0">
-                <button onClick={EmojiHandler} className="text-3xl mr-2 text-gray-500" >
-                    <LiaGrinAlt />
-                </button>
+                <Button
+                    onClickFunc={EmojiHandler}
+                    icon={<LiaGrinAlt className="text-2xl" />}
+
+                />
 
                 <div className=" flex pl-2 w-full justify-between  bg-gray-800 rounded-lg">
                     <textarea value={message} onChange={getMessage} className="w-full mr-2 p-2 text-white  bg-gray-800 border-none focus:ring-0 " rows={1} type="textarea" />
-                    <button onClick={sendMessageHandler}><HiPaperAirplane className="text-2xl mr-2 text-gray-500" /></button>
+                    <Button
+                        onClickFunc={sendMessageHandler}
+                        icon={<HiPaperAirplane className="text-2xl mr-2 text-gray-500" />}
+                    />
                 </div>
             </div>
         </>

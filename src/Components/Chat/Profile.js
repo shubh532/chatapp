@@ -11,7 +11,6 @@ import Button from "../../UI Components/Button";
 import Span from "../../UI Components/Span";
 
 function Profile() {
-    // const [groupUsers, setGroupUsers] = useState([])
     const Dispatch = useDispatch()
     const Info = useSelector(state => state.UserData.Info)
     const Users = useSelector(state => state.UserData.users)
@@ -34,7 +33,7 @@ function Profile() {
         try {
             const Response = await axios.get(`http://localhost:4000/group/${Info.groupId}`)
             const groupUsers = Response.data.users
-            Dispatch(getGroupUser([...groupUsers]))
+            Dispatch(getGroupUser({ User: [...groupUsers], AddingUser: false }))
         } catch (err) {
             console.log(err, "err from Profile")
         }
@@ -78,7 +77,6 @@ function Profile() {
                     users={groupUsers}
                     btn={true}
                     btnName={<HiMiniEllipsisVertical className="text-xl" />}
-
                     isAdmin={Info[0].isAdmin}
                 />
 

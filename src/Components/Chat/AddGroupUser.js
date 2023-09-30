@@ -7,7 +7,7 @@ import { LiaGrinAlt, } from "react-icons/lia";
 import Avatar from "../../UI Components/Avatar";
 import Picker from '@emoji-mart/react'
 import axios from "axios";
-import { getGroups } from "../../Redux/Groups";
+import { getGroups, getGroupUser } from "../../Redux/Groups";
 import Button from "../../UI Components/Button";
 import Span from "../../UI Components/Span";
 
@@ -81,11 +81,16 @@ function AddGroupUser() {
 
     const AddUsersToExistGroup = async () => {
         try {
-            const Response = await axios.post(`http://localhost:4000/group/addusers`, { groupId: groupId, users: selectedUsers })
-            console.log(groupId, selectedUsers, "AddUsersToExistGroup")
+            const Response = await axios.post(`http://localhost:4000/group/addusers/${groupId}`, { groupId: groupId, users: selectedUsers })
+
+            if (Response.status === 200) {
+                Dispatch(getGroupUser({ User: [...selectedUsers], AddingUser: true }))
+                Dispatch(modalHandler())
+            }
         } catch (err) {
             console.log(err)
         }
+
     }
 
     return (

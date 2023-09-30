@@ -1,5 +1,6 @@
 import axios from "axios";
-import { useSelector } from "react-redux/es/hooks/useSelector";
+import { useDispatch, useSelector } from "react-redux";
+import { AdminHandler } from "../Redux/Groups";
 
 function Li(props) {
     return (
@@ -8,19 +9,16 @@ function Li(props) {
 }
 
 
-function PopUpCard({ userId, isAdmin, users, UpdateGroupUser, popUpCardHandler }) {
+function PopUpCard({ userId, isAdmin, users, popUpCardHandler }) {
     const groupId = useSelector(state => state.Group.groupId)
+    const Dispatch = useDispatch()
 
     const makeAdminHandler = async () => {
-        console.log("let go")
         try {
             const Response = await axios.post(`http://localhost:4000/group/admin/${userId}`, { userId: userId, groupId: groupId })
             console.log(Response, "Response")
             if (Response.status === 200) {
-                const userIndex = users.findIndex(user => user.id === userId)
-                users[userIndex].admin = true
-                console.log(users[userIndex])
-                UpdateGroupUser([...users])
+                Dispatch(AdminHandler({ userId: userId, isAdmin: true }))
                 popUpCardHandler()
             }
         } catch (err) {
@@ -38,9 +36,7 @@ function PopUpCard({ userId, isAdmin, users, UpdateGroupUser, popUpCardHandler }
         try {
             const Response = await axios.post(`http://localhost:4000/group/admin/remove/${userId}`, { userId: userId, groupId: groupId })
             if (Response.status === 200) {
-                const userIndex = users.findIndex(user => user.id === userId)
-                users[userIndex].admin = false
-                UpdateGroupUser([...users])
+                Dispatch(AdminHandler({ userId: userId, isAdmin: false }))
                 popUpCardHandler()
             }
         } catch (err) {

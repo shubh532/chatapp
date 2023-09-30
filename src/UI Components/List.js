@@ -3,7 +3,7 @@ import Avatar from "./Avatar"
 import PopUpCard from "./PopUpCard";
 import Button from "./Button";
 import Span from "./Span";
-function List({ users, btn, btnName, BtnFuncs, UpdateGroupUser, isAdmin }) {
+function List({ users, btn, btnName, BtnFuncs, isAdmin }) {
     const [popUpCard, SetPopUpCard] = useState(null)
 
     const PopUpCardHandler = (userId) => {
@@ -55,7 +55,6 @@ function List({ users, btn, btnName, BtnFuncs, UpdateGroupUser, isAdmin }) {
                                 <PopUpCard
                                     userId={user.id}
                                     isAdmin={isAdmin}
-                                    UpdateGroupUser={UpdateGroupUser}
                                     users={users}
                                     popUpCardHandler={() => closePopUpCard()}
                                 />

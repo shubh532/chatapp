@@ -18,13 +18,47 @@ const groupSlice = createSlice({
             state.isExistGroup = action.payload
         },
         getGroupUser(state, action) {
-            const newUsers = action.payload
-            state.groupUsers = [...newUsers]
+            const newUsers = action.payload.User
+            const isAddingUser = action.payload.AddingUser
+            if (isAddingUser) {
+                state.groupUsers = [...state.groupUsers, ...newUsers]
+            } else {
+                state.groupUsers = [...newUsers]
+            }
+        },
+        AdminHandler(state, action) {
+            const userId = action.payload.userId
+            const isAdmin = action.payload.isAdmin
+            if (isAdmin) {
+                const userIndex = state.groupUsers.findIndex(user => user.id === userId)
+                const updateUser = {
+                    ...state.groupUsers[userIndex],
+                    admin: true
+                }
+                const updateList = [
+                    ...state.groupUsers.slice(0, userIndex),
+                    updateUser,
+                    ...state.groupUsers.slice(userIndex + 1)
+                ]
+                state.groupUsers = [...updateList]
+            } else {
+                const userIndex = state.groupUsers.findIndex(user => user.id === userId)
+                const updateUser = {
+                    ...state.groupUsers[userIndex],
+                    admin: false
+                }
+                const updateList = [
+                    ...state.groupUsers.slice(0, userIndex),
+                    updateUser,
+                    ...state.groupUsers.slice(userIndex + 1)
+                ]
+                state.groupUsers = [...updateList]
+            }
         }
     }
 })
 
 
-export const { getGroups, getGroupId, existGroups, getGroupUser, makeGroupAdmin } = groupSlice.actions
+export const { getGroups, getGroupId, existGroups, getGroupUser, AdminHandler } = groupSlice.actions
 
 export default groupSlice.reducer

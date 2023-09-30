@@ -5,32 +5,36 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import List from "../../UI Components/List";
 import { HiMiniEllipsisVertical, HiMiniUserPlus, HiXMark } from "react-icons/hi2";
-import { getGroupId } from "../../Redux/Groups";
+import { existGroups, getGroupId, getGroupUser } from "../../Redux/Groups";
+import { modalHandler, getModalUsers } from "../../Redux/Modal";
 import Button from "../../UI Components/Button";
 import Span from "../../UI Components/Span";
 
 function Profile() {
-    const [groupUsers, setGroupUsers] = useState([])
+    // const [groupUsers, setGroupUsers] = useState([])
     const Dispatch = useDispatch()
     const Info = useSelector(state => state.UserData.Info)
     const Users = useSelector(state => state.UserData.users)
     const isUser = useSelector(state => state.UserData.ShowUsers)
+    const { groupUsers } = useSelector(state => state.Group)
+
 
     const InviteUser = Users.filter(user => !groupUsers.some(groupuser => user.id === groupuser.id));
 
-
+    const AddUsersToGroup = () => {
+        Dispatch(modalHandler())
+        Dispatch(getModalUsers([...InviteUser]))
+        Dispatch(existGroups(true))
+    }
     const closeUserInfo = () => {
         Dispatch(ShowUserInfoHandler())
     }
 
-    const UpdateGroupUser = (users) => {
-        setGroupUsers([...users])
-    }
     const getGroupsMember = async () => {
         try {
             const Response = await axios.get(`http://localhost:4000/group/${Info.groupId}`)
             const groupUsers = Response.data.users
-            setGroupUsers([...groupUsers])
+            Dispatch(getGroupUser([...groupUsers]))
         } catch (err) {
             console.log(err, "err from Profile")
         }
@@ -65,7 +69,7 @@ function Profile() {
                     <Span contain={"Group Members"} />
 
                     <Button
-                        onClickFunc={() => closeUserInfo()}
+                        onClickFunc={() => AddUsersToGroup()}
                         icon={<HiMiniUserPlus className="pr-1 text-2xl" />}
                         name={"Add Peoples"}
                     />
@@ -74,7 +78,7 @@ function Profile() {
                     users={groupUsers}
                     btn={true}
                     btnName={<HiMiniEllipsisVertical className="text-xl" />}
-                    UpdateGroupUser={(user) => UpdateGroupUser(user)}
+
                     isAdmin={Info[0].isAdmin}
                 />
 

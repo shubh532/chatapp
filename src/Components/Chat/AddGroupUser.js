@@ -13,9 +13,11 @@ import Span from "../../UI Components/Span";
 
 
 function AddGroupUser() {
-    const Users = useSelector(state => state.UserData.users)
-    const userId = useSelector(state => state.UserData.userId)
-    const groups = useSelector(state => state.Group.groups)
+    const { Users } = useSelector(state => state.Modal)
+    const { userId } = useSelector(state => state.UserData)
+    const { isExistGroup } = useSelector(state => state.Group)
+    const { groupId } = useSelector(state => state.Group)
+
     const [GroupName, typeGroupName] = useState("")
     const [showEmojiChart, unShowEmojiChart] = useState(false)
     const [select_Users, setSelect_User] = useState([...Users])
@@ -70,33 +72,47 @@ function AddGroupUser() {
         try {
             const Response = await axios.post(`http://localhost:4000/group/${userId}`, { name: GroupName, users: selectedUsers })
             const GroupDatails = Response.data.groupName
-            Dispatch(getGroups([...groups, { id: GroupDatails.id, Name: GroupDatails.Name }]))
+            Dispatch(getGroups({ id: GroupDatails.id, Name: GroupDatails.Name }))
         } catch (err) {
             console.log(err, "from createGroupHandler")
         }
         Dispatch(modalHandler())
     }
 
+    const AddUsersToExistGroup = async () => {
+        try {
+            const Response = await axios.post(`http://localhost:4000/group/addusers`, { groupId: groupId, users: selectedUsers })
+            console.log(groupId, selectedUsers, "AddUsersToExistGroup")
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
     return (
         <Card>
-            <div className="shadow-xl p-2 ">
-                <form className="flex items-center justify-between" >
-                    <div className="flex items-center">
-                        <input className="w-72 border-none focus:ring-0" maxLength={30} placeholder="Group Name" type="text" required value={GroupName} onChange={getGroupNameHandler} ></input>
-                        <Button
-                            onClickFunc={(e) => EmojiHandler(e)}
-                            icon={<LiaGrinAlt className="text-2xl" />}
-                        />
-                    </div>
-                    <Button
-                        onClickFunc={(e) => createGroupHandler(e)}
-                        icon={<HiMiniCheck className="text-2xl" />} />
-                </form>
-            </div>
+            {!isExistGroup &&
+                <div className="shadow-xl p-2 ">
+                    <form className="flex items-center justify-between" >
+                        <div className="flex w-full items-center">
+                            <input className=" w-full border-none focus:ring-0" maxLength={30} placeholder="Group Name" type="text" required value={GroupName} onChange={getGroupNameHandler} ></input>
+                            <Button
+                                onClickFunc={(e) => EmojiHandler(e)}
+                                icon={<LiaGrinAlt className="text-2xl" />}
+                            />
+                        </div>
+                    </form>
+                </div>
+            }
             {showEmojiChart && <div className="absolute top-14 right-0">
                 <Picker skin={5} onEmojiSelect={onClickEmojiHandler} previewPosition={"none"} />
             </div>}
             <div>
+                {selectedUsers.length > 0 &&
+                    <Span
+                        contain={"Selected Users"}
+                        style={"ml-2 font-semibold"}
+                    />
+                }
                 <ul className="overflow-y-auto max-h-52">
                     {selectedUsers.map((user) =>
                         <li key={user.userId} onClick={() => RemoveSelectedUser(user.userId, user.Name)} className="p-2 cursor-pointer hover:bg-slate-400 flex items-center">
@@ -130,6 +146,11 @@ function AddGroupUser() {
                 }
                 )}
             </ul>
+            <div className="absolute right-4 bottom-6 bg-slate-400 rounded-full overflow-hidden">
+                <Button
+                    onClickFunc={(e) => { !isExistGroup ? createGroupHandler(e) : AddUsersToExistGroup() }}
+                    icon={<HiMiniCheck className="text-2xl" />} />
+            </div>
         </Card>
     )
 }

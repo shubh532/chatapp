@@ -1,15 +1,18 @@
 import Avatar from "../../UI Components/Avatar"
 import { HiMiniMagnifyingGlass, HiMiniUsers, HiMiniUser } from "react-icons/hi2"
-import { useDispatch } from "react-redux"
-import { modalHandler } from "../../Redux/Modal"
+import { useDispatch, useSelector } from "react-redux"
+import { getModalUsers, modalHandler } from "../../Redux/Modal"
 import { ShowGroup, ShowUsers } from "../../Redux/UserData"
 import Button from "../../UI Components/Button"
 
 export function SearchBar() {
+    const { users } = useSelector(state => state.UserData)
+
     const Dispatch = useDispatch()
 
     function groupBtnHandler() {
         Dispatch(modalHandler())
+        Dispatch(getModalUsers([...users]))
     }
 
     function GroupBtn() {

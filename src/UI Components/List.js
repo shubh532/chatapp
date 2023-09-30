@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Avatar from "./Avatar"
 import PopUpCard from "./PopUpCard";
 import Button from "./Button";
@@ -15,6 +15,10 @@ function List({ users, btn, btnName, BtnFuncs, UpdateGroupUser, isAdmin }) {
     }
 
     const BtnHandler = BtnFuncs ? BtnFuncs : PopUpCardHandler
+
+    useEffect(() => {
+        closePopUpCard()
+    }, [users])
 
     return (
         <ul>

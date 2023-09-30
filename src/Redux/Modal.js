@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = { showModal: false }
+const initialState = { showModal: false, Users: [] }
 
 const ModalSlice = createSlice({
     name: "modal",
@@ -8,10 +8,13 @@ const ModalSlice = createSlice({
     reducers: {
         modalHandler(state) {
             state.showModal = !state.showModal
+        },
+        getModalUsers(state, action) {
+            state.Users = [...action.payload]
         }
     }
 })
 
-export const { modalHandler } = ModalSlice.actions
+export const { modalHandler, getModalUsers } = ModalSlice.actions
 
 export default ModalSlice.reducer

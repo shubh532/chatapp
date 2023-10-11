@@ -24,7 +24,7 @@ function UsersList({ users }) {
                             </div>
                             <Span
                                 contain={"4:05pm"}
-                                style={"absolute right-0 top-1 mr-2 text-sm text-gray-500 font-medium"}
+                                extrastyle={"absolute right-0 top-1 mr-2 text-sm text-gray-500 font-medium"}
                             />
                         </Link>
                     </li>

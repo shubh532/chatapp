@@ -43,7 +43,7 @@ function List({ users, btn, btnName, BtnFuncs, isAdmin }) {
                                 color={"gray"}
                                 shade={300}
                                 size={"xs"}
-                                style={"p-1 border-2 border-gray-500 rounded-md bg-slate-900"}
+                                extrastyle={"p-1 border-2 border-gray-500 rounded-md bg-slate-900"}
                             />
                         }
                         <div>
